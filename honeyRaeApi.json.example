@@ -1,0 +1,47 @@
+{
+	"users": [
+		{
+			"id": 1,
+			"fullName": "Dion Stoade",
+			"email": "dstoade0@cornell.edu",
+			"isStaff": false
+		},
+		
+	],
+	"customers": [
+		{
+			"id": 1,
+			"address": "2802 Zula Locks",
+			"phoneNumber": "852-837-9713",
+			"userId": 2
+		},
+	
+	],
+	"employees": [
+		{
+			"id": 1,
+			"specialty": "PC Repair",
+			"rate": 72.47,
+			"userId": 4
+		},
+	
+	],
+	"serviceTickets": [
+		{
+			"id": 1,
+			"userId": 3,
+			"description": "Saepe ex sapiente deserunt et voluptas fugiat vero quasi. Ipsam est non ipsa. Occaecati rerum ipsa consequuntur. Ratione commodi unde sint non rerum. Sit quia et aut sunt.",
+			"emergency": false,
+			"dateCompleted": "Fri Apr 29 2022 14:02:20 GMT-0500 (Central Daylight Time)"
+		},
+		
+	],
+	"employeeTickets": [
+		{
+			"id": 1,
+			"employeeId": 3,
+			"serviceTicketId": 1
+		},
+		
+	]
+}
