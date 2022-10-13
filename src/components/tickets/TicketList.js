@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import "./Tickets.css";
 
 export const TicketList = () => {
+  const honeyrae_user = localStorage.getItem("honey_user");
+  const localUser = JSON.parse(honeyrae_user);
+
   const [tickets, setTickets] = useState([]);
+  const [filteredTickets, setFilter] = useState([]);
 
   useEffect(
     () => {
@@ -16,11 +20,23 @@ export const TicketList = () => {
     },
     [] // When this array is empty, you are observing initial component state
   );
+
+  useEffect(() => {
+    //employee
+    if (localUser.staff) {
+      setFilter(tickets);
+    } else {
+      const myTickets = tickets.filter(
+        (ticket) => ticket.userId === localUser.id
+      );
+      setFilter(myTickets);
+    }
+  }, [tickets]);
   return (
     <>
       <h2>List of Tickets</h2>
       <article className="tickets">
-        {tickets.map((ticket) => {
+        {filteredTickets.map((ticket) => {
           return (
             <section key={ticket.id} className="ticket">
               <header>{ticket.description}</header>
