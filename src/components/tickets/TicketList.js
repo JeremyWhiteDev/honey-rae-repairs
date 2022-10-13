@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Tickets.css";
 
 export const TicketList = () => {
@@ -8,6 +9,7 @@ export const TicketList = () => {
   const [tickets, setTickets] = useState([]);
   const [filteredTickets, setFilter] = useState([]);
   const [emergency, setEmergency] = useState(false);
+  const navigate = useNavigate();
 
   //fetch data
   useEffect(
@@ -67,7 +69,9 @@ export const TicketList = () => {
           </button>
         </>
       ) : (
-        ""
+        <button onClick={() => navigate("/ticket/create")}>
+          Create Ticket
+        </button>
       )}
 
       <h2>List of Tickets</h2>
