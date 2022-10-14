@@ -9,6 +9,7 @@ export const TicketList = () => {
   const [tickets, setTickets] = useState([]);
   const [filteredTickets, setFilter] = useState([]);
   const [emergency, setEmergency] = useState(false);
+  const [onlyOpen, setOpenFilter] = useState(false);
   const navigate = useNavigate();
 
   //fetch data
@@ -49,6 +50,21 @@ export const TicketList = () => {
       setFilter(tickets);
     }
   }, [emergency]);
+
+  //filter based on status
+  useEffect(() => {
+    if (onlyOpen) {
+      const openTickets = tickets.filter((ticket) => {
+        return ticket.userId === localUser.id && ticket.dateCompleted === "";
+      });
+      setFilter(openTickets);
+    } else {
+      const myTickets = tickets.filter(
+        (ticket) => ticket.userId === localUser.id
+      );
+      setFilter(myTickets);
+    }
+  }, [onlyOpen]);
   return (
     <>
       {localUser.staff ? (
@@ -69,9 +85,13 @@ export const TicketList = () => {
           </button>
         </>
       ) : (
-        <button onClick={() => navigate("/ticket/create")}>
-          Create Ticket
-        </button>
+        <>
+          <button onClick={() => navigate("/ticket/create")}>
+            Create Ticket
+          </button>
+          <button onClick={() => setOpenFilter(true)}>Open Tickets</button>
+          <button onClick={() => setOpenFilter(false)}>All My Tickets</button>
+        </>
       )}
 
       <h2>List of Tickets</h2>
