@@ -29,28 +29,32 @@ export const TicketList = () => {
   //filter data based on employee/user
   useEffect(() => {
     //employee
-    if (localUser.staff) {
+    if (localUser.staff && tickets.length) {
+      console.log("useEffect/setFilter to:" + tickets);
       setFilter(tickets);
-    } else {
+    } else if (tickets.length) {
       const myTickets = tickets.filter(
         (ticket) => ticket.userId === localUser.id
       );
       setFilter(myTickets);
     }
   }, [tickets]);
-
+  console.log("change1Energency2");
   //filter based on emergency
   useEffect(() => {
-    if (emergency) {
+    if (emergency && tickets.length) {
+      console.log("change2");
       const emergencyTickets = tickets.filter(
         (ticket) => ticket.emergency === true
       );
       setFilter(emergencyTickets);
-    } else {
+    } else if (tickets.length) {
+      console.log("change3  ");
       setFilter(tickets);
     }
   }, [emergency]);
 
+  console.log("change1Status");
   //filter based on status
   useEffect(() => {
     if (onlyOpen) {
@@ -58,7 +62,7 @@ export const TicketList = () => {
         return ticket.userId === localUser.id && ticket.dateCompleted === "";
       });
       setFilter(openTickets);
-    } else {
+    } else if (tickets.length) {
       const myTickets = tickets.filter(
         (ticket) => ticket.userId === localUser.id
       );
