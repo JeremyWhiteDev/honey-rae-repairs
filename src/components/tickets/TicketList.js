@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Tickets.css";
 
-export const TicketList = () => {
+export const TicketList = ({ getterSearchTerms }) => {
   const honeyrae_user = localStorage.getItem("honey_user");
   const localUser = JSON.parse(honeyrae_user);
 
@@ -25,6 +25,15 @@ export const TicketList = () => {
     },
     [] // When this array is empty, you are observing initial component state
   );
+
+  useEffect(() => {
+    const searchedTickets = tickets.filter((ticket) => {
+      return ticket.description
+        .toLowerCase()
+        .startsWith(getterSearchTerms.toLowerCase());
+    });
+    setFilter(searchedTickets);
+  }, [getterSearchTerms]);
 
   //filter data based on employee/user
   useEffect(() => {
