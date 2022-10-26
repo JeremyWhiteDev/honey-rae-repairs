@@ -5,8 +5,6 @@ import "./Customers.css";
 export const CustomerList = () => {
   const [customers, setCustomers] = useState([]);
 
-  useEffect();
-
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
