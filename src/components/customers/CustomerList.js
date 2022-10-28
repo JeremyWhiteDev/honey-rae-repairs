@@ -19,7 +19,9 @@ export const CustomerList = () => {
   return (
     <section className="customers">
       {customers.map((customer) => {
-        return <Customer customer={customer} />;
+        return (
+          <Customer key={`customer--${customer.id}`} customer={customer} />
+        );
       })}
     </section>
   );
