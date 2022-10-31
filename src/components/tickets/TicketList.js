@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Ticket } from "./Ticket";
 import "./Tickets.css";
 
 export const TicketList = ({ getterSearchTerms }) => {
@@ -15,7 +16,6 @@ export const TicketList = ({ getterSearchTerms }) => {
   //fetch data
   useEffect(
     () => {
-      console.log("Initial state of tickets", tickets); // View the initial state of tickets
       const fetchData = async () => {
         const response = await fetch(`http://localhost:8088/serviceTickets`);
         const ticketArray = await response.json();
@@ -39,7 +39,6 @@ export const TicketList = ({ getterSearchTerms }) => {
   useEffect(() => {
     //employee
     if (localUser.staff && tickets.length) {
-      console.log("useEffect/setFilter to:" + tickets);
       setFilter(tickets);
     } else if (tickets.length) {
       const myTickets = tickets.filter(
@@ -48,22 +47,18 @@ export const TicketList = ({ getterSearchTerms }) => {
       setFilter(myTickets);
     }
   }, [tickets]);
-  console.log("change1Energency2");
   //filter based on emergency
   useEffect(() => {
     if (emergency && tickets.length) {
-      console.log("change2");
       const emergencyTickets = tickets.filter(
         (ticket) => ticket.emergency === true
       );
       setFilter(emergencyTickets);
     } else if (tickets.length) {
-      console.log("change3  ");
       setFilter(tickets);
     }
   }, [emergency]);
 
-  console.log("change1Status");
   //filter based on status
   useEffect(() => {
     if (onlyOpen) {
@@ -111,15 +106,7 @@ export const TicketList = ({ getterSearchTerms }) => {
       <article className="tickets">
         {filteredTickets.map((ticket) => {
           return (
-            <section key={ticket.id} className="ticket">
-              <header>
-                <Link to={`/tickets/${ticket.id}/edit`}>
-                  Ticket {ticket.id}
-                </Link>
-              </header>
-              <section>{ticket.description}</section>
-              <footer>Emergency: {ticket.emergency ? "🧨" : "No"}</footer>
-            </section>
+            <Ticket key={ticket.id} ticket={ticket} isStaff={localUser.staff} />
           );
         })}
       </article>
