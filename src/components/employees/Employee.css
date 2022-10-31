@@ -1,0 +1,16 @@
+.employees {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.employee {
+    background-color: rgb(155, 255, 255);
+    max-width: 400px;
+    min-width: 300px;
+    padding: 8px;
+    margin: 10px 25px;
+    border: 2px solid aqua;
+    border-radius: 4px;
+    box-shadow: 0 0 5px gray;
+}
