@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Tickets.css";
 
 export const TicketList = ({ getterSearchTerms }) => {
@@ -112,8 +112,13 @@ export const TicketList = ({ getterSearchTerms }) => {
         {filteredTickets.map((ticket) => {
           return (
             <section key={ticket.id} className="ticket">
-              <header>{ticket.description}</header>
-              <footer>Emergency: {ticket.emergency ? "❗" : "No"}</footer>
+              <header>
+                <Link to={`/tickets/${ticket.id}/edit`}>
+                  Ticket {ticket.id}
+                </Link>
+              </header>
+              <section>{ticket.description}</section>
+              <footer>Emergency: {ticket.emergency ? "🧨" : "No"}</footer>
             </section>
           );
         })}

@@ -1,16 +1,28 @@
-import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-export const TicketForm = () => {
-  const [ticket, update] = useState({
+export const TicketEdit = () => {
+  const [ticket, updateTicket] = useState({
     description: "",
     emergency: false,
   });
+  const { ticketId } = useParams();
 
   const navigate = useNavigate();
 
   const localHoneyUser = localStorage.getItem("honey_user");
   const honeyUserObject = JSON.parse(localHoneyUser);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        `http://localhost:8088/serviceTickets/${ticketId}`
+      );
+      const data = await response.json();
+      updateTicket(data);
+    };
+    fetchData();
+  }, []);
 
   const handleSaveButtonClick = (event) => {
     event.preventDefault();
@@ -21,14 +33,14 @@ export const TicketForm = () => {
     // TODO: Perform the fetch() to POST the object to the API
     const postTicket = async () => {
       const fetchOptions = {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(object),
       };
       const response = await fetch(
-        "http://localhost:8088/serviceTickets",
+        `http://localhost:8088/serviceTickets/${ticketId}`,
         fetchOptions
       );
       await response.json();
@@ -53,7 +65,7 @@ export const TicketForm = () => {
             onChange={(evt) => {
               const copy = { ...ticket };
               copy.description = evt.target.value;
-              update(copy);
+              updateTicket(copy);
             }}
           />
         </div>
@@ -63,11 +75,12 @@ export const TicketForm = () => {
           <label htmlFor="name">Emergency:</label>
           <input
             type="checkbox"
+            checked={ticket.emergency}
             value={ticket.emergency}
             onChange={(evt) => {
               const copy = { ...ticket };
               copy.emergency = evt.target.checked;
-              update(copy);
+              updateTicket(copy);
             }}
           />
         </div>
@@ -76,7 +89,13 @@ export const TicketForm = () => {
         onClick={(clickEvent) => handleSaveButtonClick(clickEvent)}
         className="btn btn-primary"
       >
-        Submit Ticket
+        Update Ticket
+      </button>
+      <button
+        onClick={(clickEvent) => navigate("/tickets")}
+        className="btn btn-primary"
+      >
+        Cancel
       </button>
     </form>
   );
