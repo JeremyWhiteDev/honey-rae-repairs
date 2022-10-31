@@ -3,6 +3,7 @@ import { TicketList } from "../tickets/TicketList";
 import { TicketForm } from "../tickets/TicketForm";
 import { AboutUs } from "../aboutUs/aboutUs";
 import { TicketContainer } from "../tickets/TicketContainer";
+import { Profile } from "../profile/Profile";
 
 export const CustomerViews = () => {
   return (
@@ -19,6 +20,7 @@ export const CustomerViews = () => {
         }
       >
         <Route path="tickets" element={<TicketList />} />
+        <Route path="profile" element={<Profile />} />
       </Route>
     </Routes>
   );
