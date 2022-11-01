@@ -84,6 +84,7 @@ export const TicketList = ({ getterSearchTerms }) => {
       setFilter(myTickets);
     }
   }, [onlyOpen]);
+
   return (
     <>
       {localUser.staff ? (
@@ -122,7 +123,7 @@ export const TicketList = ({ getterSearchTerms }) => {
               ticket={ticket}
               isStaff={localUser.staff}
               employees={employees}
-              userId={localUser.id}
+              currentUser={localUser}
               getAllTickets={getAllTickets}
             />
           );
