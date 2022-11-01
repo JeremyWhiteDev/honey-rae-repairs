@@ -106,6 +106,20 @@ export const Ticket = ({
     }
   };
 
+  const deleteTicket = async () => {
+    //declare fetchOptions
+    const fetchOptions = {
+      method: "DELETE",
+    };
+    //fetch stringified entry obj
+    const response = await fetch(
+      `http://localhost:8088/serviceTickets/${ticket.id} `,
+      fetchOptions
+    );
+    //handle response
+    getAllTickets();
+  };
+
   return (
     <>
       <section className="ticket">
@@ -125,6 +139,11 @@ export const Ticket = ({
             claimButtonVisibility()
           )}
           {finishButtonVisibility()}
+          {!isStaff ? (
+            <button onClick={() => deleteTicket()}>Delete this Ticket</button>
+          ) : (
+            ""
+          )}
         </footer>
       </section>
     </>
