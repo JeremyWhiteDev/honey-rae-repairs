@@ -4,7 +4,7 @@ export const Ticket = ({
   ticket,
   isStaff,
   employees,
-  userId,
+  currentUser,
   getAllTickets,
 }) => {
   let foundEmployee = null;
@@ -15,8 +15,10 @@ export const Ticket = ({
       (employee) => employee.id === ticket.employeeTickets[0].employeeId
     );
   }
+
+  //   console.log(currentUser);
   const currentEmployeeObj = employees.find((employee) => {
-    return employee.userId === userId;
+    return employee.userId === currentUser.id;
   });
 
   const handleClaim = (click) => {
@@ -50,6 +52,60 @@ export const Ticket = ({
     getAllTickets();
   };
 
+  const claimButtonVisibility = () => {
+    if (isStaff) {
+      return (
+        <button
+          id={`claim--${ticket.id}`}
+          onClick={(eventClick) => handleClaim(eventClick)}
+        >
+          Claim Ticket
+        </button>
+      );
+    } else {
+      return "";
+    }
+  };
+
+  //create an additonal button that is conditionally rendered for each ticket.
+
+  //that button will have an onClick to finish a ticket.
+
+  //if a ticket has a date completed string, than return finshed.
+  //if not && current userId === ticket.userId then return a button for posting to database.
+
+  const closeTicket = async () => {
+    const copy = {
+      dateCompleted: new Date(),
+    };
+    //declare fetchOptions
+    const fetchOptions = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(copy),
+    };
+    //fetch stringified entry obj
+    const response = await fetch(
+      `http://localhost:8088/serviceTickets/${ticket.id}`,
+      fetchOptions
+    );
+    //handle response
+    getAllTickets();
+  };
+
+  const finishButtonVisibility = () => {
+    if (
+      currentEmployeeObj?.id === foundEmployee?.id &&
+      ticket.dateCompleted === ""
+    ) {
+      return <button onClick={() => closeTicket()}>finish</button>;
+    } else {
+      return "";
+    }
+  };
+
   return (
     <>
       <section className="ticket">
@@ -64,15 +120,11 @@ export const Ticket = ({
         <footer>
           <p>Emergency: {ticket.emergency ? "🧨" : "No"}</p>
           {ticket.employeeTickets.length ? (
-            <p>Currently Being Workied On by {foundEmployee.user?.fullName}</p>
+            <p>Currently Being Worked On by {foundEmployee?.user?.fullName}</p>
           ) : (
-            <button
-              id={`claim--${ticket.id}`}
-              onClick={(eventClick) => handleClaim(eventClick)}
-            >
-              Claim Ticket
-            </button>
+            claimButtonVisibility()
           )}
+          {finishButtonVisibility()}
         </footer>
       </section>
     </>
