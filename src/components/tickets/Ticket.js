@@ -50,6 +50,21 @@ export const Ticket = ({
     getAllTickets();
   };
 
+  const buttonVisibility = () => {
+    if (isStaff) {
+      return (
+        <button
+          id={`claim--${ticket.id}`}
+          onClick={(eventClick) => handleClaim(eventClick)}
+        >
+          Claim Ticket
+        </button>
+      );
+    } else {
+      return "";
+    }
+  };
+
   return (
     <>
       <section className="ticket">
@@ -64,14 +79,9 @@ export const Ticket = ({
         <footer>
           <p>Emergency: {ticket.emergency ? "🧨" : "No"}</p>
           {ticket.employeeTickets.length ? (
-            <p>Currently Being Workied On by {foundEmployee.user?.fullName}</p>
+            <p>Currently Being Worked On by {foundEmployee?.user?.fullName}</p>
           ) : (
-            <button
-              id={`claim--${ticket.id}`}
-              onClick={(eventClick) => handleClaim(eventClick)}
-            >
-              Claim Ticket
-            </button>
+            buttonVisibility()
           )}
         </footer>
       </section>
