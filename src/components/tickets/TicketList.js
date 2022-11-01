@@ -11,16 +11,27 @@ export const TicketList = ({ getterSearchTerms }) => {
   const [filteredTickets, setFilter] = useState([]);
   const [emergency, setEmergency] = useState(false);
   const [onlyOpen, setOpenFilter] = useState(false);
+  const [employees, setEmployees] = useState([]);
   const navigate = useNavigate();
 
+  const getAllTickets = async () => {
+    const response = await fetch(
+      `http://localhost:8088/serviceTickets?_embed=employeeTickets`
+    );
+    const ticketArray = await response.json();
+    setTickets(ticketArray);
+  };
   //fetch data
   useEffect(
     () => {
       const fetchData = async () => {
-        const response = await fetch(`http://localhost:8088/serviceTickets`);
-        const ticketArray = await response.json();
-        setTickets(ticketArray);
+        const responseEmployees = await fetch(
+          `http://localhost:8088/employees?_expand=user`
+        );
+        const employeeArray = await responseEmployees.json();
+        setEmployees(employeeArray);
       };
+      getAllTickets();
       fetchData();
     },
     [] // When this array is empty, you are observing initial component state
@@ -106,7 +117,14 @@ export const TicketList = ({ getterSearchTerms }) => {
       <article className="tickets">
         {filteredTickets.map((ticket) => {
           return (
-            <Ticket key={ticket.id} ticket={ticket} isStaff={localUser.staff} />
+            <Ticket
+              key={ticket.id}
+              ticket={ticket}
+              isStaff={localUser.staff}
+              employees={employees}
+              userId={localUser.id}
+              getAllTickets={getAllTickets}
+            />
           );
         })}
       </article>
