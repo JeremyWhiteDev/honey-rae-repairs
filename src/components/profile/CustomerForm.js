@@ -49,7 +49,14 @@ export const CustomerForm = ({ userObj }) => {
       //handle response
       setFeedback("Customer profile successfully saved");
     };
-    putData(profile);
+    const profileCopy = {
+      address: profile.address,
+      phoneNumber: profile.phoneNumber,
+      userId: profile.userId,
+      loyalty: profile.loyalty,
+    };
+
+    putData(profileCopy);
   };
 
   return (
